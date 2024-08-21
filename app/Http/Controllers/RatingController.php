@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\rating;
 use Illuminate\Http\Request;
+use App\Http\Requests\RatingRequest;
 
 class RatingController extends Controller
 {
@@ -18,7 +19,7 @@ class RatingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RatingRequest $request)
     {
         //
     }
@@ -34,7 +35,7 @@ class RatingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, rating $rating)
+    public function update(RatingRequest $request, rating $rating)
     {
         //
     }

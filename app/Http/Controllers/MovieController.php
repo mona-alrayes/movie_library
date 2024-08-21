@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\movie;
 use Illuminate\Http\Request;
+use App\Http\Requests\MovieRequest;
 
 class MovieController extends Controller
 {
@@ -18,7 +19,7 @@ class MovieController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MovieRequest $request)
     {
         //
     }
@@ -34,7 +35,7 @@ class MovieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, movie $movie)
+    public function update(MovieRequest $request, movie $movie)
     {
         //
     }
