@@ -14,6 +14,16 @@ return new class extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedBigInteger('movie_id');
+            $table->unsignedBigInteger('user_id');
+            $table->integer('rating')->unsigned();
+            $table->string('review')->nullable();
+            $table->softDeletes();
+            // Set foreign key constraints
+            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // Ensure unique rating per user per movie
+            $table->unique(['movie_id', 'user_id']); 
         });
     }
 
