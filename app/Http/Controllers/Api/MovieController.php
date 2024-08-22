@@ -34,8 +34,8 @@ class MovieController extends Controller
     {
         try {
             $validatedRequest = $request->validated();
-            $this->movieService->storeMovie($validatedRequest);
-            return $this->successResponse(null, 'Movie stored successfully.', 201);
+            $movieResource = $this->movieService->storeMovie($validatedRequest);
+            return $this->successResponse($movieResource, 'Movie stored successfully.', 201);
         } catch (\Throwable $th) {
             return $this->handleException($th, 'An error occurred while storing the movie.');
         }
@@ -71,4 +71,5 @@ class MovieController extends Controller
             return $this->handleException($th, 'An error occurred while deleting the movie.');
         }
     }
+
 }
