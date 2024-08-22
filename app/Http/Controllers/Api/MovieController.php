@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 use App\Models\Movie;
 use App\Services\MovieService;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MovieResource;
 use App\Http\Traits\ApiResponserTrait;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
