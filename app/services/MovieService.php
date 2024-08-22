@@ -15,23 +15,27 @@ class MovieService
     public function storeMovie(array $data)
     {
         $movie = Movie::create($data);
-        return new MovieResource($movie);
+        // Wrap the single movie in a collection and convert to array
+        return MovieResource::collection(collect([$movie]))->toArray(request());
     }
 
     public function showMovie(Movie $movie)
     {
-        return new MovieResource($movie);
+        // Wrap the single movie in a collection and convert to array
+        return MovieResource::collection(collect([$movie]))->toArray(request());
     }
 
     public function updateMovie(Movie $movie, array $data)
     {
         $movie->update($data);
-        return new MovieResource($movie);
+        // Wrap the single movie in a collection and convert to array
+        return MovieResource::collection(collect([$movie]))->toArray(request());
     }
 
     public function deleteMovie(Movie $movie)
     {
         $movie->delete();
-        return response()->noContent();
+        // Return an empty array to maintain consistency
+        return [];
     }
 }
