@@ -1,54 +1,74 @@
-<?php
-
+<?php 
 namespace App\Http\Controllers\Api;
 
-use App\Models\movie;
-use Illuminate\Http\Request;
-use App\Http\Requests\MovieRequest;
+use App\Models\Movie;
+use App\Services\MovieService;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\MovieResource;
+use App\Http\Traits\ApiResponserTrait;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
-use App\Http\Controllers\Controller;
 
 
 class MovieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $movieService;
+    use ApiResponserTrait;
+
+    public function __construct(MovieService $movieService)
+    {
+        $this->movieService = $movieService;
+    }
+
     public function index()
     {
-        //
+        try {
+            $moviesWithRatings = $this->movieService->getAllMovies();
+            return $this->successResponse($moviesWithRatings, 'All movies retrieved successfully.', 200);
+        } catch (\Exception $e) {
+            return $this->handleException($e, 'An error occurred while fetching the movies.');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreMovieRequest $request)
     {
-        //
+        try {
+            $validatedRequest = $request->validated();
+            $this->movieService->storeMovie($validatedRequest);
+            return $this->successResponse(null, 'Movie stored successfully.', 201);
+        } catch (\Throwable $th) {
+            return $this->handleException($th, 'An error occurred while storing the movie.');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(movie $movie)
+    public function show(Movie $movie)
     {
-        //
+        try {
+            $fetchedData = $this->movieService->showMovie($movie);
+            return $this->successResponse($fetchedData, 'Movie details retrieved successfully.', 200);
+        } catch (\Throwable $th) {
+            return $this->handleException($th, 'An error occurred while retrieving the movie.');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateMovieRequest $request, movie $movie)
+    public function update(UpdateMovieRequest $request, Movie $movie)
     {
-        //
+        try {
+            $validatedRequest = $request->validated();
+            $updatedMovieResource = $this->movieService->updateMovie($movie, $validatedRequest);
+            return $this->successResponse($updatedMovieResource, 'Movie updated successfully.', 200);
+        } catch (\Throwable $th) {
+            return $this->handleException($th, 'An error occurred while updating the movie.');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(movie $movie)
+    public function destroy(Movie $movie)
     {
-        //
+        try {
+            $this->movieService->deleteMovie($movie);
+            return $this->successResponse(null, 'Movie deleted successfully.', 204);
+        } catch (\Throwable $th) {
+            return $this->handleException($th, 'An error occurred while deleting the movie.');
+        }
     }
 }

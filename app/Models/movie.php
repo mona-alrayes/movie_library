@@ -33,8 +33,13 @@ class Movie extends Model
         'release_year' => 'integer',
     ];
 
-    public function ratings() 
+    public function ratings()
     {
         return $this->hasMany(Rating::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->ratings()->avg('rating');
     }
 }

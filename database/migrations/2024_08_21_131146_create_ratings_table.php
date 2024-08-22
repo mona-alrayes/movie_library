@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('movie_id');
             $table->unsignedBigInteger('user_id');
             $table->integer('rating')->unsigned();
-            $table->string('review')->nullable();
+            $table->text('review')->nullable();
             $table->softDeletes();
             // Set foreign key constraints
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
