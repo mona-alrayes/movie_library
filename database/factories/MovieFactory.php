@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\movie>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Movie>
  */
 class MovieFactory extends Factory
 {
@@ -17,11 +17,11 @@ class MovieFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(3),
-            'director' => fake()->name,
-            'genre' => fake()->word,
-            'release_year' => fake()->year,
-            'description' => fake()->paragraph,
+            'title' => $this->faker->sentence(3),
+            'director' => $this->faker->name,
+            'genre' => $this->faker->word,
+            'release_year' => $this->faker->year,
+            'description' => $this->faker->paragraph,
         ];
     }
 }
