@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\Movie; // Correct model name
+use App\Models\movie;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,15 +18,14 @@ class RatingFactory extends Factory
      */
     public function definition(): array
     {
-        // Fetch a random movie and user, with fallback in case none exist
-        $movieId = Movie::inRandomOrder()->first()->id ?? null;
-        $userId = User::inRandomOrder()->first()->id ?? null;
+        $movieId = movie::inRandomOrder()->first()->id; 
+        $userId = User::inRandomOrder()->first()->id; 
 
         return [
-            'rating' => $this->faker->numberBetween(1, 5), // Using $this->faker
+            'rating' => $this->faker->numberBetween(1, 5), // Assuming rating is between 1 and 5
             'review' => $this->faker->paragraph,
-            'movie_id' => $movieId, // Assign a random movie, if available
-            'user_id' => $userId,   // Assign a random user, if available
+            'movie_id' => $movieId,
+            'user_id' => $userId,
         ];
     }
 }
