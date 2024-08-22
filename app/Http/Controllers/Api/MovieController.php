@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\rating;
+use App\Models\movie;
 use Illuminate\Http\Request;
-use App\Http\Requests\RatingRequest;
+use App\Http\Requests\MovieRequest;
+use App\Http\Requests\StoreMovieRequest;
+use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Controllers\Controller;
 
-class RatingController extends Controller
+
+class MovieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +23,7 @@ class RatingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RatingRequest $request)
+    public function store(StoreMovieRequest $request)
     {
         //
     }
@@ -27,7 +31,7 @@ class RatingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(rating $rating)
+    public function show(movie $movie)
     {
         //
     }
@@ -35,7 +39,7 @@ class RatingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RatingRequest $request, rating $rating)
+    public function update(UpdateMovieRequest $request, movie $movie)
     {
         //
     }
@@ -43,7 +47,7 @@ class RatingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(rating $rating)
+    public function destroy(movie $movie)
     {
         //
     }
