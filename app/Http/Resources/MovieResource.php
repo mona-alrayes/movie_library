@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,7 +23,7 @@ class MovieResource extends JsonResource
             'release_year' => $this->release_year,
             'description' => $this->description,
             'ratings' => RatingResource::collection($this->ratings ?: collect([])), // Ensure empty array if no ratings
-
+            'average_rating' => $this->averageRating(),
         ];
     }
 }
