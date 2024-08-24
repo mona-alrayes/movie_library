@@ -32,3 +32,7 @@ use App\Http\Controllers\Api\RatingController;
 //     Route::apiResource('/movies', MovieController::class);
 //     Route::apiResource('/ratings', RatingController::class);
 // });
+// Route::group(['prefix' => 'v1'], function () {
+// Route::apiResource('movies', MovieController::class);
+// });
+Route::apiResource('movies', MovieController::class);

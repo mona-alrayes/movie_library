@@ -26,12 +26,12 @@ trait ApiResponserTrait{
         ], $httpResponseCode);
     }
     
-    public function notFound($message){
+    public function notFound($message , int $httpResponseCode = 404): JsonResponse {
 
         return response()->json([
             'success'  =>false,
             'message'  =>$message,
-            'code'     =>404
+            'code'     =>$httpResponseCode
         ]);
     }
 

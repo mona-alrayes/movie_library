@@ -1,8 +1,10 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\Movie;
 use App\Services\MovieService;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiResponserTrait;
 use App\Http\Requests\StoreMovieRequest;
@@ -33,42 +35,55 @@ class MovieController extends Controller
     {
         try {
             $validatedRequest = $request->validated();
-            $movieResource = $this->movieService->storeMovie($validatedRequest);
-            return $this->successResponse($movieResource, 'Movie stored successfully.', 201);
-        } catch (\Throwable $th) {
-            return $this->handleException($th, 'An error occurred while storing the movie.');
+            $movie = $this->movieService->storeMovie($validatedRequest);
+
+            return $this->successResponse($movie, 'Movie stored successfully.', 201);
+        } catch (\Exception $e) {
+            return $this->handleException($e, 'An error occurred while storing the movie.');
         }
     }
 
-    public function show(Movie $movie)
+    public function show($id)
     {
         try {
-            $fetchedData = $this->movieService->showMovie($movie);
+            $fetchedData = $this->movieService->showMovie($id);
             return $this->successResponse($fetchedData, 'Movie details retrieved successfully.', 200);
-        } catch (\Throwable $th) {
-            return $this->handleException($th, 'An error occurred while retrieving the movie.');
+        } catch (\Exception $e) {
+            return $this->handleException($e, 'An error occurred while retrieving the movie.');
         }
     }
 
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
         try {
+            if (!$movie->exists) {
+                return $this->notFound('Movie not found.');
+            }
             $validatedRequest = $request->validated();
             $updatedMovieResource = $this->movieService->updateMovie($movie, $validatedRequest);
             return $this->successResponse($updatedMovieResource, 'Movie updated successfully.', 200);
-        } catch (\Throwable $th) {
-            return $this->handleException($th, 'An error occurred while updating the movie.');
+        } catch (\Exception $e) {
+            return $this->handleException($e, 'An error occurred while updating the movie.');
         }
     }
 
-    public function destroy(Movie $movie)
+    public function destroy($id)
     {
         try {
-            $this->movieService->deleteMovie($movie);
-            return $this->successResponse(null, 'Movie deleted successfully.', 204);
-        } catch (\Throwable $th) {
-            return $this->handleException($th, 'An error occurred while deleting the movie.');
+            $this->movieService->deleteMovie($id);
+            return $this->successResponse([], 'Movie deleted successfully.', 204);
+        } catch (\Exception $e) {
+            return $this->handleException($e, 'An error occurred while deleting the movie.');
         }
     }
+    protected function handleException(\Exception $e, $message)
+    {
+        // Log the error if needed
+        Log::error($e->getMessage());
 
+        return response()->json([
+            'message' => $message,
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }

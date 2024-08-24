@@ -16,15 +16,13 @@ class MovieResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'title' => $this->title,
             'director' => $this->director,
             'genre' => $this->genre,
             'release_year' => $this->release_year,
             'description' => $this->description,
-            'ratings' => RatingResource::collection($this->whenLoaded('ratings')),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'ratings' => RatingResource::collection($this->ratings ?: collect([])), // Ensure empty array if no ratings
+
         ];
     }
 }
