@@ -18,7 +18,7 @@ use App\Http\Controllers\Api\RatingController;
 */
 
 // Routes that require admin access
-Route::group(['middleware' => ['auth', 'role:admin']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::post('movies', [MovieController::class, 'store']);
     Route::put('movies/{movie}', [MovieController::class, 'update']);
     Route::delete('movies/{movie}', [MovieController::class, 'destroy']);
