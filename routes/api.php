@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\RatingController;
 
@@ -16,23 +17,17 @@ use App\Http\Controllers\Api\RatingController;
 |
 */
 
+// Routes that require admin access
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::post('movies', [MovieController::class, 'store']);
+    Route::put('movies/{movie}', [MovieController::class, 'update']);
+    Route::delete('movies/{movie}', [MovieController::class, 'destroy']);
+});
 
-// Route::group(['prefix' => 'v1'], function () {
-//     // Movie Routes using apiResource
-//     Route::apiResource('movies', MovieController::class);
+// Public routes for movies
+Route::apiResource('movies', MovieController::class)
+    ->except('store', 'update', 'destroy'); // These are the routes excluded from apiResource
 
-//     // Additional route to get a specific movie with its ratings
-//     Route::get('/movies/{movie}/ratings', [RatingController::class, 'indexForMovie'])->name('movies.ratings.index'); // View all ratings for a specific movie
-
-//     // Rating Routes
-//     Route::post('/movies/{movie}/ratings', [RatingController::class, 'store'])->name('movies.ratings.store'); // Add a rating to a specific movie
-//     Route::delete('/movies/{movie}/ratings/{rating}', [RatingController::class, 'destroy'])->name('movies.ratings.destroy'); // Delete a specific rating
-// });
-// Route::group(['middleware' => ['auth', 'role:admin']], function () {
-//     Route::apiResource('/movies', MovieController::class);
-//     Route::apiResource('/ratings', RatingController::class);
-// });
-// Route::group(['prefix' => 'v1'], function () {
-// Route::apiResource('movies', MovieController::class);
-// });
-Route::apiResource('movies', MovieController::class);
+// Authentication routes
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
