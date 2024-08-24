@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiResponserTrait;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use Illuminate\Http\Request;
 
 
 class MovieController extends Controller
@@ -21,10 +22,10 @@ class MovieController extends Controller
         $this->movieService = $movieService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $moviesWithRatings = $this->movieService->getAllMovies();
+            $moviesWithRatings = $this->movieService->getAllMovies($request);
             return $this->successResponse($moviesWithRatings, 'All movies retrieved successfully.', 200);
         } catch (\Exception $e) {
             return $this->handleException($e, 'An error occurred while fetching the movies.');
@@ -76,6 +77,11 @@ class MovieController extends Controller
             return $this->handleException($e, 'An error occurred while deleting the movie.');
         }
     }
+
+
+
+
+
     protected function handleException(\Exception $e, $message)
     {
         // Log the error if needed
