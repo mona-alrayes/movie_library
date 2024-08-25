@@ -2,18 +2,25 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Rating;
 
 class RatingSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Number of ratings to create.
+     *
+     * @var int
      */
-    public function run(): void
+    protected $numberOfRatings = 10; // Specify the number of ratings you want to create
+
+    /**
+     * Seed the ratings table.
+     *
+     * @return void
+     */
+    public function run()
     {
-        
-        Rating::factory()->count(20)->create();
+        Rating::factory()->count($this->numberOfRatings)->create();
     }
 }

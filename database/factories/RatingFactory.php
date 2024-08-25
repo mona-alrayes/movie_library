@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Movie;
 use App\Models\User;
 use App\Models\Rating;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Movie; 
 
 /**
  * Factory for creating instances of the Rating model.
@@ -28,15 +28,11 @@ class RatingFactory extends Factory
      */
     public function definition(): array
     {
-        // Retrieve a random movie ID and user ID for the rating
-        $movieId = Movie::inRandomOrder()->first()->id; // Fetch a random movie ID
-        $userId = User::inRandomOrder()->first()->id;   // Fetch a random user ID
-
         return [
-            'rating' => $this->faker->numberBetween(1, 5), 
-            'review' => $this->faker->paragraph,          
-            'movie_id' => $movieId,                       
-            'user_id' => $userId,                         
+            'rating' => $this->faker->numberBetween(1, 5), // Random rating between 1 and 5
+            'review' => $this->faker->paragraph, // Random paragraph for the review
+            'movie_id' => Movie::inRandomOrder()->first()->id, // Random movie ID
+            'user_id' => User::inRandomOrder()->first()->id, // Random user ID
         ];
     }
 }
