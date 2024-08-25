@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\movie;
+use App\Models\Movie;
 use Faker\Factory as Faker;
 
 class MovieSeeder extends Seeder
