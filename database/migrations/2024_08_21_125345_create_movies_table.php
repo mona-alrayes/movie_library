@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('genre')->required();
             $table->integer('release_year')->required();
             $table->longText('description')->required();
-            $table->softDeletes(); 
             $table->timestamps();
         });
     }
