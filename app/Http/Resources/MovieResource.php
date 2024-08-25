@@ -22,7 +22,7 @@ class MovieResource extends JsonResource
             'genre' => $this->genre,
             'release_year' => $this->release_year,
             'description' => $this->description,
-            'ratings' => RatingResource::collection($this->whenLoaded('ratings')), // Include ratings if they are loaded
+            'ratings' => RatingResource::collection($this->ratings ?: collect([])), // Ensure empty array if no ratings
             'average_rating' => $this->averageRating(),
         ];
     }
