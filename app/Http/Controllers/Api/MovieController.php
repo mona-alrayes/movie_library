@@ -72,14 +72,11 @@ class MovieController extends Controller
     {
         try {
             $this->movieService->deleteMovie($id);
-            return $this->successResponse([], 'Movie deleted successfully.', 204);
+            return $this->successResponse([], 'Movie deleted successfully.', 200);
         } catch (\Exception $e) {
             return $this->handleException($e, 'An error occurred while deleting the movie.');
         }
     }
-
-
-
 
 
     protected function handleException(\Exception $e, $message)

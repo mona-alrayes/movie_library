@@ -23,7 +23,12 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::put('movies/{movie}', [MovieController::class, 'update']);
     Route::delete('movies/{movie}', [MovieController::class, 'destroy']);
 });
-
+// Routes that require user access
+Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
+    Route::post('/movies/{movieId}/rating', [RatingController::class, 'store']);
+    Route::put('/movies/{movieId}/rating', [RatingController::class, 'update']);
+    Route::delete('/movies/{movieId}/rating', [RatingController::class, 'destroy']);
+});
 // Public routes for movies
 Route::apiResource('movies', MovieController::class)
     ->except('store', 'update', 'destroy'); // These are the routes excluded from apiResource

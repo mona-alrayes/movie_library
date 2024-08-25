@@ -11,33 +11,33 @@ use App\Http\Resources\MovieResource;
 class MovieService
 {
 
-    
+
     public function getAllMovies(Request $request)
-{
-    // Extract filters and sorting options from the request
-    $query = Movie::with('ratings');
+    {
+        // Extract filters and sorting options from the request
+        $query = Movie::with('ratings');
 
-    // Apply filters
-    $query->when($request->genre, function ($q, $genre) {
-        return $q->where('genre', $genre);
-    });
+        // Apply filters
+        $query->when($request->genre, function ($q, $genre) {
+            return $q->where('genre', $genre);
+        });
 
-    $query->when($request->director, function ($q, $director) {
-        return $q->where('director', $director);
-    });
+        $query->when($request->director, function ($q, $director) {
+            return $q->where('director', $director);
+        });
 
-    // Apply sorting
-    if ($request->sort_by) {
-        $sortOrder = $request->sort_order ?? 'asc';
-        $query->orderBy($request->sort_by, $sortOrder);
+        // Apply sorting
+        if ($request->sort_by) {
+            $sortOrder = $request->sort_order ?? 'asc';
+            $query->orderBy($request->sort_by, $sortOrder);
+        }
+
+        // Paginate the results
+        $movies = $query->paginate(10);
+
+        // Return the paginated results with ratings
+        return MovieResource::collection($movies)->toArray(request());
     }
-
-    // Paginate the results
-    $movies = $query->paginate(10);
-
-    // Return the paginated results with ratings
-    return MovieResource::collection($movies)->toArray(request());
-}
 
 
     public function storeMovie(array $data)

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreRatingRequest extends FormRequest
+class UpdateRatingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,8 @@ class StoreRatingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rating' => 'required|integer|between:1,5',
-            'review' => 'nullable|string|max:2000',
-            // Validation rule for movie_id taken from the route
+            'rating' => 'sometimes|integer|between:1,5',
+            'review' => 'sometimes|string|max:2000',
             'movie_id' => [
                 'required',
                 'integer',
@@ -33,23 +32,15 @@ class StoreRatingRequest extends FormRequest
                     $query->where('id', $this->route('movieId'));
                 }),
             ],
-            // Validation rule for user_id taken from the authenticated user
-            'user_id' => [
-                'required',
-                'integer',
-                Rule::exists('users', 'id')->where(function ($query) {
-                    $query->where('id', auth()->id());
-                }),
-            ],
         ];
     }
 
     /**
-     * Modify the data before validation runs.
+     * Prepare the data for validation.
      */
     protected function prepareForValidation()
     {
-        // Merge route parameters into request data before validation
+        // Merge the movie_id from the route and user_id from the authenticated user
         $this->merge([
             'movie_id' => $this->route('movieId'),
             'user_id' => auth()->id(),
