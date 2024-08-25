@@ -2,16 +2,24 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class User
+ *
+ * Represents a user in the application. This model handles user authentication,
+ * roles, and relationships with ratings. It integrates with Sanctum for API token 
+ * management and Spatie for role-based permissions.
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable ,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -35,7 +43,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
@@ -44,9 +52,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Get the ratings for the user.
+     *
+     * This defines a one-to-many relationship where a user can have multiple ratings.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function ratings() 
     {
         return $this->hasMany(Rating::class);
     }
-    
 }

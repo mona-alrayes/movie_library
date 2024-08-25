@@ -12,7 +12,7 @@ class StoreRatingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // Adjust this if authorization logic is needed
     }
 
     /**
@@ -25,15 +25,11 @@ class StoreRatingRequest extends FormRequest
         return [
             'rating' => 'required|integer|between:1,5',
             'review' => 'nullable|string|max:2000',
-            // Validation rule for movie_id taken from the route
             'movie_id' => [
                 'required',
                 'integer',
-                Rule::exists('movies', 'id')->where(function ($query) {
-                    $query->where('id', $this->route('movieId'));
-                }),
+                Rule::exists('movies', 'id'),
             ],
-            // Validation rule for user_id taken from the authenticated user
             'user_id' => [
                 'required',
                 'integer',

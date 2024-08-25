@@ -12,7 +12,7 @@ class UpdateRatingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // Adjust this if authorization logic is required
     }
 
     /**
@@ -25,12 +25,11 @@ class UpdateRatingRequest extends FormRequest
         return [
             'rating' => 'sometimes|integer|between:1,5',
             'review' => 'sometimes|string|max:2000',
+            // Ensure the movie exists
             'movie_id' => [
                 'required',
                 'integer',
-                Rule::exists('movies', 'id')->where(function ($query) {
-                    $query->where('id', $this->route('movieId'));
-                }),
+                Rule::exists('movies', 'id'),
             ],
         ];
     }
@@ -40,7 +39,7 @@ class UpdateRatingRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        // Merge the movie_id from the route and user_id from the authenticated user
+        // Set the movie_id from the route
         $this->merge([
             'movie_id' => $this->route('movieId'),
             'user_id' => auth()->id(),

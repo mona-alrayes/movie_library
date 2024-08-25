@@ -11,7 +11,7 @@ class UpdateMovieRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // Adjust this if authorization logic is needed
     }
 
     /**
@@ -22,11 +22,11 @@ class UpdateMovieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'=>'sometimes|string|max:50',
-            'director'=>'sometimes|string|max:50',
-            'genre'=>'sometimes|string|max:50',
-            'release_year'=>'sometimes|integer|min:1895|max:2023',
-            'description'=>'sometimes|string|max:2000',
+            'title' => 'sometimes|string|max:50',
+            'director' => 'sometimes|string|max:50',
+            'genre' => 'sometimes|string|max:50',
+            'release_year' => 'sometimes|integer|min:1895|max:2023',
+            'description' => 'sometimes|string|max:2000',
         ];
     }
 }

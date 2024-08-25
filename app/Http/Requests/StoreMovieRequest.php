@@ -11,7 +11,7 @@ class StoreMovieRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // Adjust this if specific authorization is needed
     }
 
     /**
@@ -21,11 +21,18 @@ class StoreMovieRequest extends FormRequest
      */
     public function rules(): array
     {
+        $currentYear = date('Y');
+
         return [
             'title' => 'required|string|max:50',
             'director' => 'required|string|max:50',
             'genre' => 'required|string|max:50',
-            'release_year' => 'required|integer|min:1895|max:' . date('Y'),
+            'release_year' => [
+                'required',
+                'integer',
+                'min:1895',
+                'max:' . $currentYear,
+            ],
             'description' => 'required|string|max:2000',
         ];
     }

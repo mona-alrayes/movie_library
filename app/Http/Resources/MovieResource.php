@@ -2,16 +2,16 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\RatingResource;
 
 class MovieResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
@@ -22,7 +22,7 @@ class MovieResource extends JsonResource
             'genre' => $this->genre,
             'release_year' => $this->release_year,
             'description' => $this->description,
-            'ratings' => RatingResource::collection($this->ratings ?: collect([])), // Ensure empty array if no ratings
+            'ratings' => RatingResource::collection($this->whenLoaded('ratings')), // Include ratings if they are loaded
             'average_rating' => $this->averageRating(),
         ];
     }

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Movie;
+use Illuminate\Http\Request;
 use App\Services\MovieService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiResponserTrait;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
-use Illuminate\Http\Request;
-
 
 class MovieController extends Controller
 {
@@ -22,7 +22,10 @@ class MovieController extends Controller
         $this->movieService = $movieService;
     }
 
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request): JsonResponse
     {
         try {
             $moviesWithRatings = $this->movieService->getAllMovies($request);
@@ -32,7 +35,10 @@ class MovieController extends Controller
         }
     }
 
-    public function store(StoreMovieRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreMovieRequest $request): JsonResponse
     {
         try {
             $validatedRequest = $request->validated();
@@ -44,7 +50,10 @@ class MovieController extends Controller
         }
     }
 
-    public function show($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(int $id): JsonResponse
     {
         try {
             $fetchedData = $this->movieService->showMovie($id);
@@ -54,7 +63,10 @@ class MovieController extends Controller
         }
     }
 
-    public function update(UpdateMovieRequest $request, Movie $movie)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
     {
         try {
             if (!$movie->exists) {
@@ -68,7 +80,10 @@ class MovieController extends Controller
         }
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(int $id): JsonResponse
     {
         try {
             $this->movieService->deleteMovie($id);
@@ -78,15 +93,14 @@ class MovieController extends Controller
         }
     }
 
-
-    protected function handleException(\Exception $e, $message)
+    /**
+     * Handle exceptions and return a response.
+     */
+    protected function handleException(\Exception $e, string $message): JsonResponse
     {
-        // Log the error if needed
-        Log::error($e->getMessage());
+        // Log the error with additional context if needed
+        Log::error($message, ['exception' => $e->getMessage(), 'request' => request()->all()]);
 
-        return response()->json([
-            'message' => $message,
-            'error' => $e->getMessage()
-        ], 500);
+        return $this->errorResponse($message, [$e->getMessage()], 500);
     }
 }
